@@ -1,0 +1,21 @@
+Language: Cpp
+BasedOnStyle: Microsoft
+LineEnding: CRLF
+
+# pre-processor style
+SortIncludes: Never
+IncludeBlocks: Regroup
+IndentPPDirectives: BeforeHash
+
+# alignment styles
+AlignArrayOfStructures: Right
+AlignConsecutiveAssignments: Consecutive
+
+# templates
+AlwaysBreakTemplateDeclarations: Yes
+
+# no-except specifiers
+AllowBreakBeforeNoexceptSpecifier: Always
+
+# braces style
+AllowShortFunctionsOnASingleLine: Empty
