@@ -16,7 +16,7 @@ if (DOXYGEN_FOUND)
         WORKING_DIRECTORY
             ${CMAKE_CURRENT_BINARY_DIR}
         BYPRODUCTS
-            ${CMAKE_CURRENT_LIST_DIR}/html/index.html
+            ${CMAKE_CURRENT_BINARY_DIR}/html/index.html
         COMMENT
             "Generating API documentations."
         VERBATIM
