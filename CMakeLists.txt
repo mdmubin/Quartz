@@ -5,6 +5,7 @@ project(Quartz LANGUAGES CXX)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 set(qz_header_files
+    include/quartz/types.hpp
     include/quartz.hpp
 )
 set(qz_source_files
@@ -14,6 +15,7 @@ add_library(quartz ${qz_header_files} ${qz_source_files})
 set_target_properties(quartz
     PROPERTIES
         CXX_STANDARD 20
+        CXX_STANDARD_REQUIRED ON
         LINKER_LANGUAGE CXX
 )
 
