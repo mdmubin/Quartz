@@ -4,7 +4,9 @@ Checks: >
   bugprone-*,
   clang-analyzer-*,
   cppcoreguidelines-*,
+    -cppcoreguidelines-pro-type-vararg,
   modernize-*,
+    -modernize-use-trailing-return-type,
   performance-*,
   portability-*,
   readability-*
