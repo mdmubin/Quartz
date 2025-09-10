@@ -50,6 +50,14 @@ using f32 = float;
 * @brief 64-bit floating point type.
 */
 using f64 = double;
+/**
+ * @brief The signed integral size type.
+ */
+using ssz = decltype(static_cast<int*>(nullptr) - static_cast<int*>(nullptr));
+/**
+ * @brief The unsigned integral size type.
+ */
+using usz = decltype(sizeof(0));
 
 /**
  * @}
