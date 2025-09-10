@@ -51,11 +51,11 @@ using f32 = float;
 */
 using f64 = double;
 /**
- * @brief The signed integral size type.
+ * @brief The signed integral size type. Should be equivalent to `std::ptrdiff_t`.
  */
 using ssz = decltype(static_cast<int*>(nullptr) - static_cast<int*>(nullptr));
 /**
- * @brief The unsigned integral size type.
+ * @brief The unsigned integral size type. Should be equivalent to `std::size_t`.
  */
 using usz = decltype(sizeof(0));
 
