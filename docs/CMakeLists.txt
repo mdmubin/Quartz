@@ -24,7 +24,7 @@ if (DOXYGEN_FOUND)
     add_custom_command(
         TARGET qzdocs
         POST_BUILD COMMAND
-            echo Documentation files successfully generated! You can view them at ${QZ_DOXYGEN_OUTPUT}/html/index.html
+            echo Documentation files successfully generated! You can view them at file:///${QZ_DOXYGEN_OUTPUT}/html/index.html
     )
 else ()
     message("Doxygen was not found. Skipping building documentation.")

@@ -13,10 +13,13 @@ option(QZ_BUILD_DOCS "Option for building project documentations." ${QZ_MAIN_PRO
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 set(QZ_HEADER_FILES
+    include/quartz/assert.hpp
+    include/quartz/macros.hpp
     include/quartz/types.hpp
     include/quartz.hpp
 )
 set(QZ_SOURCE_FILES
+    source/assert.cpp
 )
 
 add_library(quartz ${QZ_HEADER_FILES} ${QZ_SOURCE_FILES})

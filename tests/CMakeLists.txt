@@ -16,12 +16,13 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 set(qz_test_sources
+    test_assert.cpp
     test_types.cpp
 )
 
 add_executable(qztest ${qz_test_sources})
 target_link_libraries(qztest PRIVATE quartz)
-target_link_libraries(qztest PRIVATE googletest)
+target_link_libraries(qztest PRIVATE GTest::gtest_main)
 
 # find tests and make available to IDEs
 include(GoogleTest)

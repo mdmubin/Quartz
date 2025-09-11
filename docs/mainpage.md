@@ -1,6 +1,6 @@
 This library is a collection of helper classes and utilities implemented in C++.
 
-## Platforms & Compilers
+### Platforms & Compilers
 Currently, the following compilers and platforms are supported:
 - Linux (x64)
 - Windows (x64)
