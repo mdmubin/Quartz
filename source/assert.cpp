@@ -15,16 +15,16 @@ void default_assertion_reporter(const qz::assertion_failure_context &context)
                  context.msg, context.cnd, context.file, context.line, context.func);
 }
 
-qz::assertion_reporter g_assertion_reporter = default_assertion_reporter;
+qz::assertion_reporter_fn g_assertion_reporter = default_assertion_reporter;
 
 } // namespace
 
-qz::assertion_reporter qz::get_default_assertion_reporter()
+qz::assertion_reporter_fn qz::get_default_assertion_reporter()
 {;
     return g_assertion_reporter;
 }
 
-qz::assertion_reporter qz::set_default_assertion_reporter(assertion_reporter reporter)
+qz::assertion_reporter_fn qz::set_default_assertion_reporter(assertion_reporter_fn reporter)
 {
     auto previous_reporter = g_assertion_reporter;
     g_assertion_reporter   = reporter;

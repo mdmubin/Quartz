@@ -1,5 +1,9 @@
 #pragma once
 
+/**
+ * @file quartz/assert.hpp
+ */
+
 #include "quartz/macros.hpp"
 #include "quartz/types.hpp"
 
@@ -9,7 +13,8 @@ namespace qz
 /**
  * @defgroup QzAssert Assertion handling
  * @brief Functions and macros for handling assertions and reporting assertion failures.
- *
+ * @details This module contains macros for asserting and verifying conditions, functions for reporting the assertion
+ * failures, and handling those assertion failures. Include <quartz/assert.hpp> to use these features.
  * @{
  */
 
@@ -50,20 +55,20 @@ struct assertion_failure_context
  * @brief A typedef for the assertion reporter callback function. This function is responsible for notifying the user of
  * the details of an assertion failure.
  */
-using assertion_reporter = void (*)(const assertion_failure_context &context);
+using assertion_reporter_fn = void (*)(const assertion_failure_context &context);
 
 /**
  * @brief Retrieve the current global assertion reporter.
  * @return The default assertion reporter.
  */
-assertion_reporter get_default_assertion_reporter();
+assertion_reporter_fn get_default_assertion_reporter();
 /**
  * @brief Update the global assertion reporter to the new one provided.
  * @param reporter The new reporter.
  *
  * @return The old assertion reporter.
  */
-assertion_reporter set_default_assertion_reporter(assertion_reporter reporter);
+assertion_reporter_fn set_default_assertion_reporter(assertion_reporter_fn reporter);
 
 //
 
