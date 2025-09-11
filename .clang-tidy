@@ -12,6 +12,7 @@ Checks: >
   readability-*
 
 CheckOptions:
+  - { key: cppcoreguidelines-avoid-non-const-global-variables.AllowInternalLinkage,  value: true }
   - { key: readability-identifier-naming.NamespaceCase,         value: lower_case }
   - { key: readability-identifier-naming.ClassCase,             value: lower_case }
   - { key: readability-identifier-naming.StructCase,            value: lower_case }
