@@ -6,7 +6,7 @@ namespace qz
 /**
  * @defgroup QzTypes Fixed-width types
  * @brief Integer and floating point typedefs used in the qz namespace.
- *
+ * @details Contains typedefs for fixed width integer and floating point types. Include <quartz/types.hpp> to use them.
  * @{
  */
 
@@ -59,8 +59,6 @@ using ssz = decltype(static_cast<int*>(nullptr) - static_cast<int*>(nullptr));
  */
 using usz = decltype(sizeof(0));
 
-/**
- * @}
- */
+/** @} */
 
 } // namespace qz

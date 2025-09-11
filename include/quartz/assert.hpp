@@ -1,9 +1,5 @@
 #pragma once
 
-/**
- * @file quartz/assert.hpp
- */
-
 #include "quartz/macros.hpp"
 #include "quartz/types.hpp"
 
@@ -92,7 +88,7 @@ void handle_assertion_failure(const assertion_failure_context &context);
  * @note This macro expands to a no-op in release builds.
  */
 #define QZ_ASSERT(cnd)                                                                                                 \
-    ((cnd) ? static_cast<void>(0) : qz::handle_assertion_failure({#cnd, "", QZ_FILE, QZ_FUNC, QZ_LINE}))
+    ((cnd) ? static_cast<void>(0) : qz::handle_assertion_failure({QZ_STRINGIFY(cnd), "", QZ_FILE, QZ_FUNC, QZ_LINE}))
 /**
  * @ingroup QzAssert
  * @brief Assert that a condition holds true. Report failure with a message and terminate if assertion fails.
@@ -101,7 +97,7 @@ void handle_assertion_failure(const assertion_failure_context &context);
  * @note This macro expands to a no-op in release builds.
  */
 #define QZ_ASSERT_MSG(cnd, msg)                                                                                        \
-    ((cnd) ? static_cast<void>(0) : qz::handle_assertion_failure({#cnd, msg, QZ_FILE, QZ_FUNC, QZ_LINE}))
+    ((cnd) ? static_cast<void>(0) : qz::handle_assertion_failure({QZ_STRINGIFY(cnd), msg, QZ_FILE, QZ_FUNC, QZ_LINE}))
 #else
     #define QZ_ASSERT(...) static_cast<void>(0)
     #define QZ_ASSERT_MSG(...) static_cast<void>(0)
@@ -114,7 +110,7 @@ void handle_assertion_failure(const assertion_failure_context &context);
  * @note This macro performs the verification even in release builds.
  */
 #define QZ_VERIFY(cnd)                                                                                                 \
-    ((cnd) ? static_cast<void>(0) : qz::handle_assertion_failure({#cnd, "", QZ_FILE, QZ_FUNC, QZ_LINE}))
+    ((cnd) ? static_cast<void>(0) : qz::handle_assertion_failure({QZ_STRINGIFY(cnd), "", QZ_FILE, QZ_FUNC, QZ_LINE}))
 /**
  * @ingroup QzAssert
  * @brief Verify that a condition holds true. Report failure with a message and terminate if verification fails.
@@ -123,4 +119,4 @@ void handle_assertion_failure(const assertion_failure_context &context);
  * @note This macro performs the verification even in release builds.
  */
 #define QZ_VERIFY_MSG(cnd, msg)                                                                                        \
-    ((cnd) ? static_cast<void>(0) : qz::handle_assertion_failure({#cnd, msg, QZ_FILE, QZ_FUNC, QZ_LINE}))
+    ((cnd) ? static_cast<void>(0) : qz::handle_assertion_failure({QZ_STRINGIFY(cnd), msg, QZ_FILE, QZ_FUNC, QZ_LINE}))
