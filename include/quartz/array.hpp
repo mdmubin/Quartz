@@ -251,67 +251,67 @@ struct array<T, 0>
 
     // METHODS
 
-    void fill([[maybe_unused]] const value_type &value)
+    constexpr void fill([[maybe_unused]] const value_type &value)
     {
         // empty.
     }
 
-    void swap([[maybe_unused]] const array &other) noexcept
+    constexpr void swap([[maybe_unused]] const array &other) noexcept
     {
         // empty.
     }
 
-    [[nodiscard]] pointer data()
+    [[nodiscard]] constexpr pointer data()
     {
         return nullptr;
     }
 
-    [[nodiscard]] const_pointer data() const
+    [[nodiscard]] constexpr const_pointer data() const
     {
         return nullptr;
     }
 
-    [[nodiscard]] reference at([[maybe_unused]] size_type pos)
+    [[nodiscard]] constexpr reference at([[maybe_unused]] size_type pos)
     {
         throw std::out_of_range("Index out of bounds access.");
     }
 
-    [[nodiscard]] const_reference at([[maybe_unused]] size_type pos) const
+    [[nodiscard]] constexpr const_reference at([[maybe_unused]] size_type pos) const
     {
         throw std::out_of_range("Index out of bounds access.");
     }
 
-    [[nodiscard]] reference front()
+    [[nodiscard]] constexpr reference front()
     {
         return *data();
     }
 
-    [[nodiscard]] const_reference front() const
+    [[nodiscard]] constexpr const_reference front() const
     {
         return *data();
     }
 
-    [[nodiscard]] reference back()
+    [[nodiscard]] constexpr reference back()
     {
         return *data();
     }
 
-    [[nodiscard]] const_reference back() const
+    [[nodiscard]] constexpr const_reference back() const
     {
         return *data();
     }
 
-    [[nodiscard]] bool empty() const
+    [[nodiscard]] constexpr bool empty() const
     {
         return true;
     }
 
-    [[nodiscard]] size_type size() const
+    [[nodiscard]] constexpr size_type size() const
     {
         return 0;
     }
 
-    [[nodiscard]] size_type max_size() const
+    [[nodiscard]] constexpr size_type max_size() const
     {
         return size();
     }
@@ -378,12 +378,12 @@ struct array<T, 0>
 
     //
 
-    [[nodiscard]] reference operator[]([[maybe_unused]] size_type pos)
+    [[nodiscard]] constexpr reference operator[]([[maybe_unused]] size_type pos)
     {
         return *data();
     }
 
-    [[nodiscard]] const_reference operator[]([[maybe_unused]] size_type pos) const
+    [[nodiscard]] constexpr const_reference operator[]([[maybe_unused]] size_type pos) const
     {
         return *data();
     }
