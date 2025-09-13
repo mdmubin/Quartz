@@ -47,6 +47,7 @@ using assertion_reporter_fn = void (*)(const assertion_failure_context &context)
 /// @brief Retrieve the current global assertion reporter.
 /// @return The default assertion reporter.
 ///
+[[nodiscard]]
 assertion_reporter_fn get_default_assertion_reporter();
 ///
 /// @brief Update the global assertion reporter to the new one provided.
