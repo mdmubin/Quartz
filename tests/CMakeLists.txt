@@ -16,6 +16,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 set(qz_test_sources
+    test_allocator.cpp
     test_array.cpp
     test_assert.cpp
     test_types.cpp

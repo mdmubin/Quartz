@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "quartz/allocator.hpp"
 #include "quartz/array.hpp"
 #include "quartz/assert.hpp"
 #include "quartz/macros.hpp"

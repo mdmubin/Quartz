@@ -13,6 +13,7 @@ option(QZ_BUILD_DOCS "Option for building project documentations." ${QZ_MAIN_PRO
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 set(QZ_HEADER_FILES
+    include/quartz/allocator.hpp
     include/quartz/array.hpp
     include/quartz/assert.hpp
     include/quartz/macros.hpp
