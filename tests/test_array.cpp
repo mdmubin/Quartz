@@ -1,7 +1,5 @@
 #include <gtest/gtest.h>
 #include <quartz/array.hpp>
-#include <quartz/memory.hpp>
-#include <utility>
 
 namespace
 {
