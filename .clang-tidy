@@ -12,7 +12,7 @@ Checks: >
   readability-*
 
 CheckOptions:
-  - { key: cppcoreguidelines-avoid-non-const-global-variables.AllowInternalLinkage,  value: true }
+  - { key: bugprone-easily-swappable-parameters.MinimumLength,  value: 4          }
   - { key: readability-identifier-naming.NamespaceCase,         value: lower_case }
   - { key: readability-identifier-naming.ClassCase,             value: lower_case }
   - { key: readability-identifier-naming.StructCase,            value: lower_case }
@@ -23,3 +23,4 @@ CheckOptions:
   - { key: readability-identifier-naming.ProtectedMemberPrefix, value: m_         }
   # Macros are the only exception to the case rules.
   - { key: readability-identifier-naming.MacroDefinitionCase,   value: UPPER_CASE }
+  - { key: cppcoreguidelines-avoid-non-const-global-variables.AllowInternalLinkage,  value: true }
