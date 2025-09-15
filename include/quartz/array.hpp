@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <iterator>
 #include <stdexcept>
 
@@ -22,13 +23,13 @@ namespace qz
 /// @tparam T The array element type.
 /// @tparam N The number of elements in the array.
 ///
-template <class T, usz N>
+template <class T, size_t N>
 struct array
 {
     // TYPEDEFS
 
     using value_type             = T;
-    using size_type              = usz;
+    using size_type              = decltype(N);
     using difference_type        = ssz;
     using reference              = value_type &;
     using const_reference        = const value_type &;
@@ -404,5 +405,9 @@ constexpr void swap(array<T, N> &arrayA, array<T, N> &arrayB) noexcept(std::is_n
 {
     arrayA.swap(arrayB);
 }
+
+/// @brief Type deduction guide for qz::array
+template <class T, class... U>
+array(T, U...) -> array<T, 1 + sizeof...(U)>;
 
 } // namespace qz
