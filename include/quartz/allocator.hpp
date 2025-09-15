@@ -9,11 +9,18 @@
 namespace qz
 {
 
-/// @defgroup QzAllocator
+/// @defgroup QzAllocator Memory allocators
+/// @brief Support for different memory allocation strategies. Although currently only the global allocator exists,
+/// other allocators will soon be added.
+///
+/// @{
 
 ///
 /// @brief The default allocator class which uses the global operators new and delete to allocate and deallocate
-/// objects. The allocations are sufficiently aligned, and this allocator also supports allocating over-aligned types.
+/// objects.
+/// @details The allocations are sufficiently aligned, and this allocator also supports allocating over-aligned types.
+/// This is a general purpose allocator, which is used as the default allocator throughout the containers in @ref
+/// QzContainers.
 ///
 /// @tparam T The type of value being allocated.
 ///
@@ -119,5 +126,9 @@ constexpr bool operator!=(const allocator<T> &lhs, const allocator<U> &rhs) noex
 {
     return !(lhs == rhs);
 }
+
+///
+/// @}
+///
 
 } // namespace qz
