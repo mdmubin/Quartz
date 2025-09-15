@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "quartz/array.hpp"
 #include "quartz/assert.hpp"
 #include "quartz/macros.hpp"
 #include "quartz/types.hpp"
+#include "quartz/utilities.hpp"
