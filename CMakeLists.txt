@@ -16,6 +16,7 @@ set(QZ_HEADER_FILES
     include/quartz/allocator.hpp
     include/quartz/array.hpp
     include/quartz/assert.hpp
+    include/quartz/atomic_operations.hpp
     include/quartz/macros.hpp
     include/quartz/types.hpp
     include/quartz/utilities.hpp
@@ -35,6 +36,10 @@ set_target_properties(quartz
 
 target_include_directories(quartz PUBLIC include)
 target_include_directories(quartz PRIVATE source)
+
+if((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+    target_link_libraries(quartz PRIVATE atomic)
+endif()
 
 if (QZ_BUILD_TESTS)
     add_subdirectory(tests)
