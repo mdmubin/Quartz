@@ -8,6 +8,7 @@
 #include "quartz/allocator.hpp"
 #include "quartz/array.hpp"
 #include "quartz/assert.hpp"
+#include "quartz/atomic.hpp"
 #include "quartz/atomic_operations.hpp"
 #include "quartz/macros.hpp"
 #include "quartz/types.hpp"

@@ -77,7 +77,7 @@ struct atomic_operations
 template <class T>
 struct atomic_operations<T, 1>
 {
-    static T load(T &storage, memory_order order) noexcept
+    [[nodiscard]] static T load(T &storage, memory_order order) noexcept
     {
         QZ_VERIFY_ATOMIC_LOAD_ORDER(order);
 #if defined(QZ_COMPILER_MSVC)
@@ -212,7 +212,7 @@ struct atomic_operations<T, 1>
 template <typename T>
 struct atomic_operations<T, 2>
 {
-    static T load(T &storage, memory_order order) noexcept
+    [[nodiscard]] static T load(T &storage, memory_order order) noexcept
     {
         QZ_VERIFY_ATOMIC_LOAD_ORDER(order);
 #if defined(QZ_COMPILER_MSVC)
@@ -347,7 +347,7 @@ struct atomic_operations<T, 2>
 template <typename T>
 struct atomic_operations<T, 4>
 {
-    static T load(T &storage, memory_order order) noexcept
+    [[nodiscard]] static T load(T &storage, memory_order order) noexcept
     {
         QZ_VERIFY_ATOMIC_LOAD_ORDER(order);
 #if defined(QZ_COMPILER_MSVC)
@@ -484,7 +484,7 @@ struct atomic_operations<T, 4>
 template <typename T>
 struct atomic_operations<T, 8>
 {
-    static T load(T &storage, memory_order order) noexcept
+    [[nodiscard]] static T load(T &storage, memory_order order) noexcept
     {
         QZ_VERIFY_ATOMIC_LOAD_ORDER(order);
 #if defined(QZ_COMPILER_MSVC)
@@ -619,7 +619,7 @@ struct atomic_operations<T, 8>
 template <typename T>
 struct atomic_operations<T, 16>
 {
-    static T load(T &storage, memory_order order) noexcept
+    [[nodiscard]] static T load(T &storage, memory_order order) noexcept
     {
         QZ_VERIFY_ATOMIC_LOAD_ORDER(order);
 #if defined(QZ_COMPILER_MSVC)
@@ -738,7 +738,7 @@ struct atomic_operations<T, 16>
 /// @return True if the atomic operations are always lock free, else false.
 ///
 template <typename T>
-constexpr bool atomic_operations_are_always_lock_free()
+[[nodiscard]] constexpr bool atomic_operations_are_always_lock_free()
 {
 #if defined(QZ_COMPILER_MSVC)
     return sizeof(T) <= 8 && ((sizeof(T) - 1) & sizeof(T)) == 0;
@@ -753,7 +753,7 @@ constexpr bool atomic_operations_are_always_lock_free()
 /// @return True if the atomic operations are lock free, else false.
 ///
 template <typename T>
-bool atomic_operations_are_lock_free()
+[[nodiscard]] bool atomic_operations_are_lock_free()
 {
 #if defined(QZ_COMPILER_MSVC)
     return atomic_operations_are_always_lock_free<T>();
