@@ -5,6 +5,7 @@ Checks: >
   clang-analyzer-*,
   cppcoreguidelines-*,
     -cppcoreguidelines-pro-type-vararg,
+    -cppcoreguidelines-pro-type-reinterpret-cast,
   modernize-*,
     -modernize-use-trailing-return-type,
   performance-*,
