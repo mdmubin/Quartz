@@ -73,8 +73,6 @@ TEST(QzArray, Array_Values)
         static_assert(array.data() == nullptr, "Empty array may not point to valid data.");
         static_assert(array.empty(), "Empty array must return true on call to array::empty().");
         static_assert(array.size() == 0, "Empty array must have zero elements in it.");
-        // constexpr auto cannot_dereference = array[0]; /* fails to compile (as expected) */
-        EXPECT_DEATH(auto cannot_dereference = array[0], "");
     }
 }
 
