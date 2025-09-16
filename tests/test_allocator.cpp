@@ -28,7 +28,7 @@ TEST(QzAllocator, Allocate_Deallocate_Checks)
         auto *ptr_b = alloc_b.allocate(alloc_size);
         EXPECT_NE(ptr_b, nullptr);
         // over aligned type should be aligned properly.
-        EXPECT_TRUE(reinterpret_cast<qz::usz>(ptr_b) % alignof(overaligned_type) == 0); // NOLINT (reinterpret cast)
+        EXPECT_TRUE(reinterpret_cast<qz::usz>(ptr_b) % alignof(overaligned_type) == 0);
         alloc_b.deallocate(ptr_b, alloc_size);
     }
 
@@ -39,13 +39,13 @@ TEST(QzAllocator, Allocate_Deallocate_Checks)
 
         auto *ptr_a = alloc_a.allocate(alloc_size, alloc_align);
         EXPECT_NE(ptr_a, nullptr);
-        EXPECT_TRUE((reinterpret_cast<qz::usz>(ptr_a) % alloc_align) == 0); // NOLINT
+        EXPECT_TRUE((reinterpret_cast<qz::usz>(ptr_a) % alloc_align) == 0);
         alloc_a.deallocate(ptr_a, alloc_size);
 
         // try allocate with low alignment, and check if it is sufficiently aligned.
         auto *ptr_b = alloc_b.allocate(alloc_size, 2);
         EXPECT_NE(ptr_b, nullptr);
-        EXPECT_TRUE((reinterpret_cast<qz::usz>(ptr_b) % alignof(overaligned_type)) == 0); // NOLINT
+        EXPECT_TRUE((reinterpret_cast<qz::usz>(ptr_b) % alignof(overaligned_type)) == 0);
         alloc_b.deallocate(ptr_b, alloc_size, alloc_align);
     }
 }
