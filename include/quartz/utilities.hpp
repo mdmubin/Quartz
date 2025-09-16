@@ -66,6 +66,24 @@ constexpr void swap(T (&arrayA)[N], T (&arrayB)[N]) noexcept(std::is_nothrow_swa
 
 //
 
+///
+/// @brief Get the address of the given value, even when operator& is overloaded.
+/// @tparam T The type of the value.
+/// @return Address of the value.
+///
+template <class T>
+constexpr T *addressof(T &value) noexcept
+{
+    // __builtin_addressof is a compiler intrinsic. This function cannot be constexpr without compiler support.
+    return __builtin_addressof(value);
+}
+
+///
+/// @brief Disallow taking address of const RValue types.
+///
+template <class T>
+const T *addressof(const T &&value) = delete;
+
 /// @}
 
 } // namespace qz
