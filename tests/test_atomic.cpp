@@ -44,38 +44,37 @@ struct sample_96bits
 
 TEST(AtomicTest, ConstructionTest)
 {
-    using namespace qz;
     {
-        [[maybe_unused]] atomic_s8              atomic_s8{};
-        [[maybe_unused]] atomic_s16             atomic_s16{};
-        [[maybe_unused]] atomic_s32             atomic_s32{};
-        [[maybe_unused]] atomic_s64             atomic_s64{};
-        [[maybe_unused]] atomic_u8              atomic_u8{};
-        [[maybe_unused]] atomic_u16             atomic_u16{};
-        [[maybe_unused]] atomic_u32             atomic_u32{};
-        [[maybe_unused]] atomic_u64             atomic_u64{};
-        [[maybe_unused]] atomic_wchar           atomic_wchar{};
-        [[maybe_unused]] atomic_char16          atomic_char16{};
-        [[maybe_unused]] atomic_char32          atomic_char32{};
-        [[maybe_unused]] atomic<sample_128bits_1> atomic_sample1{};
-        [[maybe_unused]] atomic<sample_128bits_2> atomic_sample2{};
+        [[maybe_unused]] auto atomic_s8      = qz::atomic_s8{};
+        [[maybe_unused]] auto atomic_s16     = qz::atomic_s16{};
+        [[maybe_unused]] auto atomic_s32     = qz::atomic_s32{};
+        [[maybe_unused]] auto atomic_s64     = qz::atomic_s64{};
+        [[maybe_unused]] auto atomic_u8      = qz::atomic_u8{};
+        [[maybe_unused]] auto atomic_u16     = qz::atomic_u16{};
+        [[maybe_unused]] auto atomic_u32     = qz::atomic_u32{};
+        [[maybe_unused]] auto atomic_u64     = qz::atomic_u64{};
+        [[maybe_unused]] auto atomic_wchar   = qz::atomic_wchar{};
+        [[maybe_unused]] auto atomic_char16  = qz::atomic_char16{};
+        [[maybe_unused]] auto atomic_char32  = qz::atomic_char32{};
+        [[maybe_unused]] auto atomic_sample1 = qz::atomic<sample_128bits_1>{};
+        [[maybe_unused]] auto atomic_sample2 = qz::atomic<sample_128bits_2>{};
     }
     {
-        [[maybe_unused]] constexpr atomic_s8              atomic_s8{1};
-        [[maybe_unused]] constexpr atomic_s16             atomic_s16{1};
-        [[maybe_unused]] constexpr atomic_s32             atomic_s32{1};
-        [[maybe_unused]] constexpr atomic_s64             atomic_s64{1};
-        [[maybe_unused]] constexpr atomic_u8              atomic_u8{1};
-        [[maybe_unused]] constexpr atomic_u16             atomic_u16{1};
-        [[maybe_unused]] constexpr atomic_u32             atomic_u32{1};
-        [[maybe_unused]] constexpr atomic_u64             atomic_u64{1};
-        [[maybe_unused]] constexpr atomic_wchar           atomic_wchar{1};
-        [[maybe_unused]] constexpr atomic_char16          atomic_char16{1};
-        [[maybe_unused]] constexpr atomic_char32          atomic_char32{1};
-        [[maybe_unused]] constexpr atomic<sample_128bits_1> atomic_sample1{
+        [[maybe_unused]] constexpr auto atomic_s8      = qz::atomic_s8{1};
+        [[maybe_unused]] constexpr auto atomic_s16     = qz::atomic_s16{1};
+        [[maybe_unused]] constexpr auto atomic_s32     = qz::atomic_s32{1};
+        [[maybe_unused]] constexpr auto atomic_s64     = qz::atomic_s64{1};
+        [[maybe_unused]] constexpr auto atomic_u8      = qz::atomic_u8{1};
+        [[maybe_unused]] constexpr auto atomic_u16     = qz::atomic_u16{1};
+        [[maybe_unused]] constexpr auto atomic_u32     = qz::atomic_u32{1};
+        [[maybe_unused]] constexpr auto atomic_u64     = qz::atomic_u64{1};
+        [[maybe_unused]] constexpr auto atomic_wchar   = qz::atomic_wchar{1};
+        [[maybe_unused]] constexpr auto atomic_char16  = qz::atomic_char16{1};
+        [[maybe_unused]] constexpr auto atomic_char32  = qz::atomic_char32{1};
+        [[maybe_unused]] constexpr auto atomic_sample1 = qz::atomic<sample_128bits_1>{
             {1, 2, 3, 4}
         };
-        [[maybe_unused]] constexpr atomic<sample_128bits_2> atomic_sample2{
+        [[maybe_unused]] constexpr auto atomic_sample2 = qz::atomic<sample_128bits_2>{
             {1, 2}
         };
     }
@@ -224,10 +223,12 @@ TEST(AtomicTest, LockFreeTest)
         static_assert(decltype(standard)::is_always_lock_free == decltype(implementation)::is_always_lock_free);
     }
     {
-        constexpr std::atomic<sample_24bits> standard{};
         constexpr qz::atomic<sample_24bits> implementation{};
-        EXPECT_EQ(standard.is_lock_free(), implementation.is_lock_free());
-        static_assert(!decltype(implementation)::is_always_lock_free);
+        // our implementation is always lock free for sizes less than or equal to 8-bytes, as the storages are padded
+        // and type punned to integral types that require no locks. This is not necessarily true for the standard
+        // implementations of atomic types, as they support a wider range of sizes.
+        EXPECT_TRUE(implementation.is_lock_free());
+        static_assert(decltype(implementation)::is_always_lock_free);
     }
     {
         constexpr std::atomic<sample_96bits> standard{};
