@@ -16,12 +16,12 @@ void default_assertion_reporter(const qz::assertion_failure_context &context)
                  context.msg, context.cnd, context.file, context.line, context.func);
 }
 
-qz::atomic g_assertion_reporter = default_assertion_reporter;
+auto g_assertion_reporter = qz::atomic{default_assertion_reporter};
 
 } // namespace
 
 qz::assertion_reporter_fn qz::get_default_assertion_reporter()
-{;
+{
     return g_assertion_reporter.load();
 }
 
