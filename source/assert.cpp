@@ -1,7 +1,8 @@
-#include "quartz/assert.hpp"
-
 #include <cstdio>
 #include <cstdlib>
+
+#include "quartz/assert.hpp"
+#include "quartz/atomic.hpp"
 
 namespace /* anonymous namespace */
 {
@@ -15,24 +16,22 @@ void default_assertion_reporter(const qz::assertion_failure_context &context)
                  context.msg, context.cnd, context.file, context.line, context.func);
 }
 
-qz::assertion_reporter_fn g_assertion_reporter = default_assertion_reporter;
+qz::atomic g_assertion_reporter = default_assertion_reporter;
 
 } // namespace
 
 qz::assertion_reporter_fn qz::get_default_assertion_reporter()
 {;
-    return g_assertion_reporter;
+    return g_assertion_reporter.load();
 }
 
 qz::assertion_reporter_fn qz::set_default_assertion_reporter(assertion_reporter_fn reporter)
 {
-    auto previous_reporter = g_assertion_reporter;
-    g_assertion_reporter   = reporter;
-    return previous_reporter;
+    return g_assertion_reporter.exchange(reporter);
 }
 
 void qz::handle_assertion_failure(const assertion_failure_context &context)
 {
-    g_assertion_reporter(context);
+    g_assertion_reporter.load()(context);
     std::abort();
 }
