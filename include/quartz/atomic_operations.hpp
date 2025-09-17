@@ -12,8 +12,6 @@
     #define QZ_COMPILER_BARRIER() __asm__ __volatile__("" ::: "memory")
 #endif
 
-// clang-format off
-
 #define QZ_VERIFY_ATOMIC_LOAD_ORDER(order) QZ_VERIFY_MSG(                                                              \
         (order <= memory_order_seq_cst &&                                                                              \
          order != memory_order_release &&                                                                              \
@@ -44,8 +42,6 @@
         }                                                                                                              \
     } while (0)
 
-// clang-format on
-
 namespace qz
 {
 
@@ -62,16 +58,15 @@ enum memory_order : u8
 template <class T, usz = sizeof(T)>
 struct atomic_operations
 {
-    // clang-format off
     static_assert(
         sizeof(T) == 1 ||
         sizeof(T) == 2 ||
         sizeof(T) == 4 ||
         sizeof(T) == 8 ||
         sizeof(T) == 16,
-        "Atomic operations are only supported if sizeof(T) is 1, 2, 4, 8 or 16 bytes."
+        "Raw atomic operations are only supported if sizeof(T) is 1, 2, 4, 8 or 16 bytes. "
+        "Consider using qz::atomic<T> if your type has a size less than or equal to 16 bytes."
     );
-    // clang-format on
 };
 
 template <class T>
@@ -740,10 +735,11 @@ struct atomic_operations<T, 16>
 template <typename T>
 [[nodiscard]] constexpr bool atomic_operations_are_always_lock_free()
 {
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
     return sizeof(T) <= 8 && ((sizeof(T) - 1) & sizeof(T)) == 0;
 #else
-    return __atomic_always_lock_free(sizeof(T), nullptr);
+    constexpr auto test_value = T{};
+    return __atomic_always_lock_free(sizeof(T), &test_value);
 #endif
 }
 
@@ -758,7 +754,8 @@ template <typename T>
 #if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
     return atomic_operations_are_always_lock_free<T>();
 #else
-    return __atomic_is_lock_free(sizeof(T), nullptr);
+    auto test_value = T{};
+    return __atomic_is_lock_free(sizeof(T), &test_value);
 #endif
 }
 

@@ -63,11 +63,11 @@ class atomic_base
 
     [[nodiscard]] bool is_lock_free() const noexcept
     {
-        return atomic_operations_are_lock_free<T>();
+        return atomic_operations_are_lock_free<store_type>();
     }
     [[nodiscard]] bool is_lock_free() const volatile noexcept
     {
-        return atomic_operations_are_lock_free<T>();
+        return atomic_operations_are_lock_free<store_type>();
     }
 
     void store(T desired, memory_order order = memory_order_seq_cst) noexcept
@@ -179,7 +179,7 @@ class atomic_base
 
     // PUBLIC MEMBERS
 
-    static constexpr bool is_always_lock_free = atomic_operations_are_always_lock_free<T>();
+    static constexpr bool is_always_lock_free = atomic_operations_are_always_lock_free<store_type>();
 
   protected:
     // PROTECTED MEMBERS
