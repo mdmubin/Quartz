@@ -69,20 +69,10 @@
     #error cannot determine compiler on unrecognized platform.
 #endif
 
-#if defined(QZ_PLATFORM_LINUX)
-    #if defined(__x86_64) || defined(__x86_64__) || defined(__amd64) || defined(__amd64__)
-        #define QZ_ARCHITECTURE_X64 1
-        #define QZ_ARCHITECTURE_STRING "x64"
-    #else
-        #error unrecognized platform architecture.
-    #endif
-#elif defined(QZ_PLATFORM_WINDOWS)
-    #if defined(_M_X64) || defined(_M_AMD64)
-        #define QZ_ARCHITECTURE_X64 1
-        #define QZ_ARCHITECTURE_STRING "x64"
-    #else
-        #error unrecognized platform architecture.
-    #endif
+
+#if defined(__x86_64) || defined(__x86_64__) || defined(__amd64) || defined(__amd64__) || defined(_M_X64) || defined(_M_AMD64)
+    #define QZ_ARCHITECTURE_X64 1
+    #define QZ_ARCHITECTURE_STRING "x64"
 #else
     #error cannot determine architecture on unrecognized platform.
 #endif
