@@ -38,9 +38,11 @@ set_target_properties(quartz
 target_include_directories(quartz PUBLIC include)
 target_include_directories(quartz PRIVATE source)
 
-if((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_link_libraries(quartz PRIVATE atomic)
-endif()
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND NOT WIN32) # cannot link to libatomic for windows builds. Use windows intrinsics instead.
+    target_link_libraries(quartz PRIVATE atomic)
+endif ()
 
 if (QZ_BUILD_TESTS)
     add_subdirectory(tests)

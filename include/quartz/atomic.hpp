@@ -14,31 +14,31 @@ template <class T>
 class atomic_base
 {
   private:
-    
-    template <class T>
+
+    template <class U>
     struct atomic_storage_traits
     {
-        static constexpr usz size = sizeof(T) == 1  ? 1
-                                : sizeof(T) == 2  ? 2
-                                : sizeof(T) <= 4  ? 4
-                                : sizeof(T) <= 8  ? 8
-                                : sizeof(T) <= 16 ? 16
-                                : sizeof(T);
-        static constexpr usz padding = size - sizeof(T);
+        static constexpr usz size = sizeof(U) == 1  ? 1
+                                  : sizeof(U) == 2  ? 2
+                                  : sizeof(U) <= 4  ? 4
+                                  : sizeof(U) <= 8  ? 8
+                                  : sizeof(U) <= 16 ? 16
+                                  : sizeof(U);
+        static constexpr usz padding = size - sizeof(U);
     };
 
     //
 
-    template <class T, bool is_padded = (atomic_storage_traits<T>::padding != 0)>
+    template <class U, bool = atomic_storage_traits<U>::padding != 0>
     struct atomic_storage
     {
-        alignas(atomic_storage_traits<T>::size) T data;
-        u8 padding[atomic_storage_traits<T>::padding];
+        alignas(atomic_storage_traits<U>::size) U data;
+        u8 padding[atomic_storage_traits<U>::padding];
     };
-    template <class T>
-    struct atomic_storage<T, false>
+    template <class U>
+    struct atomic_storage<U, false>
     {
-        alignas(atomic_storage_traits<T>::size) T data;
+        alignas(atomic_storage_traits<U>::size) U data;
     };
 
   public:
@@ -434,10 +434,10 @@ QZ_ATOMIC_INTEGRAL_TYPE(wchar_t);
 //
 
 using atomic_s8  = atomic<s8>;
-using atomic_i16 = atomic<s16>;
-using atomic_i32 = atomic<s32>;
-using atomic_i64 = atomic<s64>;
-using atomic_isz = atomic<ssz>;
+using atomic_s16 = atomic<s16>;
+using atomic_s32 = atomic<s32>;
+using atomic_s64 = atomic<s64>;
+using atomic_ssz = atomic<ssz>;
 using atomic_usz = atomic<usz>;
 using atomic_u8  = atomic<u8>;
 using atomic_u16 = atomic<u16>;
@@ -445,6 +445,9 @@ using atomic_u32 = atomic<u32>;
 using atomic_u64 = atomic<u64>;
 
 using atomic_bool = atomic<bool>;
+using atomic_wchar = atomic<wchar_t>;
+using atomic_char16 = atomic<char16_t>;
+using atomic_char32 = atomic<char32_t>;
 
 //
 

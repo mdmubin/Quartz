@@ -5,7 +5,7 @@
 #include "quartz/types.hpp"
 #include "quartz/utilities.hpp"
 
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
     #include <intrin.h>
     #define QZ_COMPILER_BARRIER() _ReadWriteBarrier() // deprecated, but what to use instead?
 #else
@@ -80,7 +80,7 @@ struct atomic_operations<T, 1>
     [[nodiscard]] static T load(T &storage, memory_order order) noexcept
     {
         QZ_VERIFY_ATOMIC_LOAD_ORDER(order);
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         u8 value = *addressof(reinterpret_cast<volatile u8 &>(storage));
         QZ_PLACE_ATOMIC_LOAD_BARRIER(order); // NOLINT (do-while)
 #else
@@ -92,7 +92,7 @@ struct atomic_operations<T, 1>
     static void store(T &storage, T desired, memory_order order) noexcept
     {
         QZ_VERIFY_ATOMIC_STORE_ORDER(order);
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         switch (order)
         {
         case memory_order_relaxed:
@@ -117,7 +117,7 @@ struct atomic_operations<T, 1>
     static T exchange(T &storage, T desired, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic exchange.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         char prev = _InterlockedExchange8(addressof(reinterpret_cast<volatile char &>(storage)),
                                           reinterpret_cast<char &>(desired));
 #else
@@ -131,7 +131,7 @@ struct atomic_operations<T, 1>
                         memory_order failure) noexcept
     {
         QZ_VERIFY_ATOMIC_CMPXCHG_ORDER(success, failure);
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         static_cast<void>(weak); // only use strong cmpxchg.
 
         char required = *addressof(reinterpret_cast<volatile char &>(expected));
@@ -153,7 +153,7 @@ struct atomic_operations<T, 1>
     static T fetch_add(T &storage, T value, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch add operation.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         char result = _InterlockedExchangeAdd8(addressof(reinterpret_cast<volatile char &>(storage)),
                                                reinterpret_cast<char &>(value));
         return reinterpret_cast<T &>(result);
@@ -164,7 +164,7 @@ struct atomic_operations<T, 1>
 
     static T fetch_sub(T &storage, T value, memory_order order) noexcept
     {
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         return fetch_add(storage, 0 - value, order);
 #else
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch sub operation.");
@@ -175,7 +175,7 @@ struct atomic_operations<T, 1>
     static T fetch_and(T &storage, T value, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch and operation.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         char result =
             _InterlockedAnd8(addressof(reinterpret_cast<volatile char &>(storage)), reinterpret_cast<char &>(value));
         return reinterpret_cast<T &>(result);
@@ -187,7 +187,7 @@ struct atomic_operations<T, 1>
     static T fetch_or(T &storage, T value, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch or operation.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         char result =
             _InterlockedOr8(addressof(reinterpret_cast<volatile char &>(storage)), reinterpret_cast<char &>(value));
         return reinterpret_cast<T &>(result);
@@ -199,7 +199,7 @@ struct atomic_operations<T, 1>
     static T fetch_xor(T &storage, T value, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch xor operation.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         char result =
             _InterlockedXor8(addressof(reinterpret_cast<volatile char &>(storage)), reinterpret_cast<char &>(value));
         return reinterpret_cast<T &>(result);
@@ -215,7 +215,7 @@ struct atomic_operations<T, 2>
     [[nodiscard]] static T load(T &storage, memory_order order) noexcept
     {
         QZ_VERIFY_ATOMIC_LOAD_ORDER(order);
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         u16 value = *addressof(reinterpret_cast<volatile u16 &>(storage));
         QZ_PLACE_ATOMIC_LOAD_BARRIER(order);
 #else
@@ -227,7 +227,7 @@ struct atomic_operations<T, 2>
     static void store(T &storage, T desired, memory_order order) noexcept
     {
         QZ_VERIFY_ATOMIC_STORE_ORDER(order);
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         switch (order)
         {
         case memory_order_relaxed:
@@ -252,7 +252,7 @@ struct atomic_operations<T, 2>
     static T exchange(T &storage, T desired, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic exchange.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         short prev = _InterlockedExchange16(addressof(reinterpret_cast<volatile short &>(storage)),
                                             reinterpret_cast<short &>(desired));
 #else
@@ -266,7 +266,7 @@ struct atomic_operations<T, 2>
                         memory_order failure) noexcept
     {
         QZ_VERIFY_ATOMIC_CMPXCHG_ORDER(success, failure);
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         QZ_UNUSED(weak);
 
         short required = *addressof(reinterpret_cast<volatile short &>(expected));
@@ -288,7 +288,7 @@ struct atomic_operations<T, 2>
     static T fetch_add(T &storage, T value, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch add operation.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         short result = _InterlockedExchangeAdd16(addressof(reinterpret_cast<volatile short &>(storage)),
                                                  reinterpret_cast<short &>(value));
         return reinterpret_cast<T &>(result);
@@ -299,7 +299,7 @@ struct atomic_operations<T, 2>
 
     static T fetch_sub(T &storage, T value, memory_order order) noexcept
     {
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         return fetch_add(storage, 0 - value, order);
 #else
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch sub operation.");
@@ -310,7 +310,7 @@ struct atomic_operations<T, 2>
     static T fetch_and(T &storage, T value, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch and operation.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         short result =
             _InterlockedAnd16(addressof(reinterpret_cast<volatile short &>(storage)), reinterpret_cast<short &>(value));
         return reinterpret_cast<T &>(result);
@@ -322,7 +322,7 @@ struct atomic_operations<T, 2>
     static T fetch_or(T &storage, T value, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch or operation.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         short result =
             _InterlockedOr16(addressof(reinterpret_cast<volatile short &>(storage)), reinterpret_cast<short &>(value));
         return reinterpret_cast<T &>(result);
@@ -334,7 +334,7 @@ struct atomic_operations<T, 2>
     static T fetch_xor(T &storage, T value, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch xor operation.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         short result =
             _InterlockedXor16(addressof(reinterpret_cast<volatile short &>(storage)), reinterpret_cast<short &>(value));
         return reinterpret_cast<T &>(result);
@@ -350,7 +350,7 @@ struct atomic_operations<T, 4>
     [[nodiscard]] static T load(T &storage, memory_order order) noexcept
     {
         QZ_VERIFY_ATOMIC_LOAD_ORDER(order);
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         u32 value = *addressof(reinterpret_cast<volatile u32 &>(storage));
         QZ_PLACE_ATOMIC_LOAD_BARRIER(order);
 #else
@@ -362,7 +362,7 @@ struct atomic_operations<T, 4>
     static void store(T &storage, T desired, memory_order order) noexcept
     {
         QZ_VERIFY_ATOMIC_STORE_ORDER(order);
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         switch (order)
         {
         case memory_order_relaxed:
@@ -387,7 +387,7 @@ struct atomic_operations<T, 4>
     static T exchange(T &storage, T desired, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic exchange.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         long prev = _InterlockedExchange(addressof(reinterpret_cast<volatile long &>(storage)),
                                          reinterpret_cast<long &>(desired));
 #else
@@ -401,7 +401,7 @@ struct atomic_operations<T, 4>
                         memory_order failure) noexcept
     {
         QZ_VERIFY_ATOMIC_CMPXCHG_ORDER(success, failure);
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         QZ_UNUSED(weak);
 
         long required = *addressof(reinterpret_cast<volatile long &>(expected));
@@ -425,7 +425,7 @@ struct atomic_operations<T, 4>
     static T fetch_add(T &storage, T value, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch add operation.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         long result = _InterlockedExchangeAdd(addressof(reinterpret_cast<volatile long &>(storage)),
                                               reinterpret_cast<long &>(value));
         return reinterpret_cast<T &>(result);
@@ -436,7 +436,7 @@ struct atomic_operations<T, 4>
 
     static T fetch_sub(T &storage, T value, memory_order order) noexcept
     {
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         return fetch_add(storage, 0 - value, order);
 #else
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch sub operation.");
@@ -447,7 +447,7 @@ struct atomic_operations<T, 4>
     static T fetch_and(T &storage, T value, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch and operation.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         long result =
             _InterlockedAnd(addressof(reinterpret_cast<volatile long &>(storage)), reinterpret_cast<long &>(value));
         return reinterpret_cast<T &>(result);
@@ -459,7 +459,7 @@ struct atomic_operations<T, 4>
     static T fetch_or(T &storage, T value, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch or operation.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         long result =
             _InterlockedOr(addressof(reinterpret_cast<volatile long &>(storage)), reinterpret_cast<long &>(value));
         return reinterpret_cast<T &>(result);
@@ -471,7 +471,7 @@ struct atomic_operations<T, 4>
     static T fetch_xor(T &storage, T value, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch xor operation.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         long result =
             _InterlockedXor(addressof(reinterpret_cast<volatile long &>(storage)), reinterpret_cast<long &>(value));
         return reinterpret_cast<T &>(result);
@@ -487,7 +487,7 @@ struct atomic_operations<T, 8>
     [[nodiscard]] static T load(T &storage, memory_order order) noexcept
     {
         QZ_VERIFY_ATOMIC_LOAD_ORDER(order);
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         u64 value = *addressof(reinterpret_cast<volatile u64 &>(storage));
         QZ_PLACE_ATOMIC_LOAD_BARRIER(order);
 #else
@@ -499,7 +499,7 @@ struct atomic_operations<T, 8>
     static void store(T &storage, T desired, memory_order order) noexcept
     {
         QZ_VERIFY_ATOMIC_STORE_ORDER(order);
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         switch (order)
         {
         case memory_order_relaxed:
@@ -524,7 +524,7 @@ struct atomic_operations<T, 8>
     static T exchange(T &storage, T desired, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic exchange.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         __int64 prev = _InterlockedExchange64(addressof(reinterpret_cast<volatile __int64 &>(storage)),
                                               reinterpret_cast<__int64 &>(desired));
 #else
@@ -538,7 +538,7 @@ struct atomic_operations<T, 8>
                         memory_order failure) noexcept
     {
         QZ_VERIFY_ATOMIC_CMPXCHG_ORDER(success, failure);
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         QZ_UNUSED(weak); // msvc STL only uses strong cmpxchg.
 
         __int64 required = *addressof(reinterpret_cast<volatile __int64 &>(expected));
@@ -560,7 +560,7 @@ struct atomic_operations<T, 8>
     static T fetch_add(T &storage, T value, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch add operation.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         __int64 result = _InterlockedExchangeAdd64(addressof(reinterpret_cast<volatile __int64 &>(storage)),
                                                    reinterpret_cast<__int64 &>(value));
         return reinterpret_cast<T &>(result);
@@ -571,7 +571,7 @@ struct atomic_operations<T, 8>
 
     static T fetch_sub(T &storage, T value, memory_order order) noexcept
     {
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         return fetch_add(storage, 0 - value, order);
 #else
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch sub operation.");
@@ -582,7 +582,7 @@ struct atomic_operations<T, 8>
     static T fetch_and(T &storage, T value, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch and operation.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         __int64 result = _InterlockedAnd64(addressof(reinterpret_cast<volatile __int64 &>(storage)),
                                            reinterpret_cast<__int64 &>(value));
         return reinterpret_cast<T &>(result);
@@ -594,7 +594,7 @@ struct atomic_operations<T, 8>
     static T fetch_or(T &storage, T value, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch or operation.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         __int64 result = _InterlockedOr64(addressof(reinterpret_cast<volatile __int64 &>(storage)),
                                           reinterpret_cast<__int64 &>(value));
         return reinterpret_cast<T &>(result);
@@ -606,7 +606,7 @@ struct atomic_operations<T, 8>
     static T fetch_xor(T &storage, T value, memory_order order) noexcept
     {
         QZ_VERIFY_MSG(order <= memory_order_seq_cst, "Invalid memory order constraint for atomic fetch xor operation.");
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
         __int64 result = _InterlockedXor64(addressof(reinterpret_cast<volatile __int64 &>(storage)),
                                            reinterpret_cast<__int64 &>(value));
         return reinterpret_cast<T &>(result);
@@ -624,7 +624,7 @@ struct atomic_operations<T, 16>
         QZ_VERIFY_ATOMIC_LOAD_ORDER(order);
 #if defined(QZ_COMPILER_MSVC)
         alignas(16) __int64 value[2] = {0, 0};
-        (void)_InterlockedCompareExchange128(static_cast<volatile __int64 *>(addressof(storage)), 0, 0, value);
+        (void)_InterlockedCompareExchange128(reinterpret_cast<volatile __int64 *>(addressof(storage)), 0, 0, value);
         return *reinterpret_cast<T *>(value);
 #elif defined(QZ_COMPILER_CLANG)
         alignas(16) __int128 value;
@@ -755,7 +755,7 @@ template <typename T>
 template <typename T>
 [[nodiscard]] bool atomic_operations_are_lock_free()
 {
-#if defined(QZ_COMPILER_MSVC)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
     return atomic_operations_are_always_lock_free<T>();
 #else
     return __atomic_is_lock_free(sizeof(T), nullptr);
@@ -771,7 +771,7 @@ template <typename T>
 ///
 inline void atomic_thread_fence(memory_order order) noexcept
 {
-#if defined(_MSC_VER) && !defined(__clang__)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
     if (order == memory_order_relaxed)
     {
         return;
@@ -796,7 +796,7 @@ inline void atomic_thread_fence(memory_order order) noexcept
 ///
 inline void atomic_signal_fence(memory_order order)
 {
-#if defined(_MSC_VER) && !defined(__clang__)
+#if defined(QZ_COMPILER_MSVC) || defined(QZ_COMPILER_CLANG_CL)
     if (order != memory_order_relaxed)
     {
         QZ_COMPILER_BARRIER();
