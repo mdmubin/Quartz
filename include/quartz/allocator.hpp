@@ -1,5 +1,7 @@
 #pragma once
 
+#include "macros.hpp"
+
 #include <new>
 #include <limits>
 #include <type_traits>
@@ -94,7 +96,12 @@ struct allocator
     /// @param count The number of elements in the chunk.
     void deallocate(pointer ptr, size_type count)
     {
+#if defined(__cpp_sized_deallocation)
         ::operator delete(ptr, count * sizeof(T), std::align_val_t{alignof(T)});
+#else
+        QZ_UNUSED(count);
+        ::operator delete(ptr, std::align_val_t{alignof(T)});
+#endif
     }
 
     /// @brief Deallocate a chunk of overaligned memory that was allocated by this allocator.
@@ -103,7 +110,12 @@ struct allocator
     /// @param align The alignment requirement which was used to allocate the chunk.
     void deallocate(pointer ptr, size_type count, size_type align)
     {
+#if defined(__cpp_sized_deallocation)
         ::operator delete(ptr, count * sizeof(T), std::align_val_t{align});
+#else
+        QZ_UNUSED(count);
+        ::operator delete(ptr, std::align_val_t{align});
+#endif
     }
 };
 
